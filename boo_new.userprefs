@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\game\player.cs">
+    <Files>
+      <File FileName="Assets\shaders\SpriteVtxColEdgeAlpha.shader" Line="12" Column="13" />
+      <File FileName="Assets\Scripts\game\treasureBox.cs" Line="25" Column="29" />
+      <File FileName="Assets\Scripts\game\GameScript.cs" Line="5" Column="35" />
+      <File FileName="Assets\Scripts\game\coin.cs" Line="38" Column="3" />
+      <File FileName="Assets\Scripts\lib\TmSpriteAnim.cs" Line="105" Column="25" />
+      <File FileName="Assets\Scripts\game\slidedUI.cs" Line="37" Column="67" />
+      <File FileName="Assets\shaders\SpriteVtxCol.shader" Line="13" Column="1" />
+      <File FileName="Assets\Scripts\game\player.cs" Line="43" Column="3" />
+      <File FileName="Assets\Scripts\SysScript.cs" Line="5" Column="31" />
+      <File FileName="Assets\Scripts\lib\TmMouseWrapper.cs" Line="73" Column="30" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

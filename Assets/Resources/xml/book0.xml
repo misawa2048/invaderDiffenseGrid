@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book name="sample book">
+  <page id="pageBase" name = "selBase" src="Prefabs/pageBase" comment="pageBase">
+  <page id="page00" name = "sel00" src="Prefabs/page00" comment="page00">
+    <page id="page03" name = "sel00_00" src="Prefabs/page03" comment="Page03" link="CMD03"></page>
+    <page id="page04" name = "sel00_01" src="Prefabs/page04" comment="Page04" link="CMD04"></page>
+    <page id="page05" name = "sel00_02" src="Prefabs/page05" comment="Page05" link="CMD05"></page>
+  </page>
+  <page id="page01" name = "sel01" src="Prefabs/page00" comment="page01">
+    <page id="page06" name = "sel01_00" src="Prefabs/page06" comment="Page06">
+      <page id="page09" name = "sel01_00_00" src="Prefabs/page09" comment="Page09" link="CMD09"></page>
+      <page id="page10" name = "sel01_00_01" src="Prefabs/page10" comment="Page10">
+        <page id="page15" name = "sel01_00_01_00" src="Prefabs/page15" comment="Page15" link="CMD15"></page>
+        <page id="page16" name = "sel01_00_01_01" src="Prefabs/page16" comment="Page16" link="CMD16"></page>
+        <page id="page17" name = "sel01_00_01_02" src="Prefabs/page17" comment="Page16" link="CMD17"></page>
+      </page>
+	</page>
+    <page id="page07" name = "sel01_01" src="Prefabs/page07" comment="Page07">
+      <page id="page11" name = "sel01_01_00" src="Prefabs/page11" comment="Page11">
+        <page id="page18" name = "sel01_01_00_00" src="Prefabs/page18" comment="Page18" link="CMD18"></page>
+        <page id="page19" name = "sel01_01_00_01" src="Prefabs/page19" comment="Page19" link="CMD19"></page>
+      </page>
+      <page id="page12" name = "sel01_01_01" src="Prefabs/page12" comment="Page12" link="CMD12">
+        <page id="page20" name = "sel01_01_01_00" src="Prefabs/page20" comment="Page20" link="CMD20"></page>
+      </page>
+      <page id="page13" name = "sel01_01_02" src="Prefabs/page13" comment="Page13" link="CMD13"></page>
+      <page id="page14" name = "sel01_01_03" src="Prefabs/page14" comment="Page14" link="CMD14"></page>
+    </page>
+  </page>
+  <page id="page02" name = "sel02" src="Prefabs/page00" comment="Page02">
+    <page id="page08" name = "sel02_00" src="Prefabs/page08" comment="Page08" link="CMD08"></page>
+  </page>
+  </page>
+</book>

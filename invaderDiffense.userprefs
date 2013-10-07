@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\game\GameScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\SysScript.cs" Line="27" Column="1" />
+      <File FileName="Assets\Scripts\game\GameScript.cs" Line="33" Column="9" />
+      <File FileName="Assets\Plugins\Android\AndroidManifest.xml" Line="3" Column="32" />
+      <File FileName="Assets\Scripts\game\touchGrid.cs" Line="26" Column="37" />
+      <File FileName="Assets\Scripts\game\touchGridOne.cs" Line="10" Column="3" />
+      <File FileName="Assets\Scripts\game\frontLine.cs" Line="13" Column="39" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

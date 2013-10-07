@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: FontEdge
+  m_Shader: {fileID: 4800000, guid: c0ff5bb7d6fc2884aabda2f12ab19195, type: 3}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 8dd79d8442a1a664d9c1aff73f64bb78, type: 3}
+          m_Scale: {x: 5, y: 5}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _FontTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 5294831a38f5af84c82009de509f119f, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _Offset
+        second: .00100000005
+      data:
+        first:
+          name: _Bright
+        second: 1
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .612023771, g: .694029808, b: .357373536, a: .952941179}
+      data:
+        first:
+          name: _Offset
+        second: {r: .00300000003, g: -.00300000003, b: 0, a: 0}

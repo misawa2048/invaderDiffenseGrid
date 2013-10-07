@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: enemy
+  m_Shader: {fileID: 4800000, guid: a511955be00297c438184cb34f58dea4, type: 3}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 78c0bcfebc4524fb0af393b555965df2, type: 3}
+          m_Scale: {x: .5, y: .5}
+          m_Offset: {x: 0, y: .5}
+    m_Floats:
+      data:
+        first:
+          name: _Cutout
+        second: .00999999978
+      data:
+        first:
+          name: _CutoutMin
+        second: .0923077017
+      data:
+        first:
+          name: _CutoutMax
+        second: 1
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .49253732, g: .49253732, b: .49253732, a: .815686285}
