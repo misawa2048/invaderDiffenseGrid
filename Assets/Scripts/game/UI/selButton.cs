@@ -3,8 +3,8 @@ using System.Collections;
 
 public class selButton : MonoBehaviour {
 	private const float COL_RATE_SEL = 1.0f;
-	private const float COL_RATE_ON = 0.75f;
-	private const float COL_RATE_OFF = 0.35f;
+	private const float COL_RATE_ON = 0.7f;
+	private const float COL_RATE_OFF = 0.4f;
 	private TmSystem mSys;
 	private GameScript mGame;
 	private TmSpriteAnim mAnm;
@@ -12,7 +12,6 @@ public class selButton : MonoBehaviour {
 	private Vector3 mDestLocalPos;
 	private GameScript.MyParts mParts = null;
 	private Color mDefCol;
-	private Vector3 mDefLocalScale;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +21,6 @@ public class selButton : MonoBehaviour {
 		mAnm.enabled = false;
 		mDefLocalPos = mDestLocalPos = transform.localPosition;
 		mDefCol = renderer.material.color;
-		mDefLocalScale = transform.localScale;
 		if((transform.parent!=null)&&(transform.parent.tag==transform.tag)){ // child
 			this.gameObject.collider.enabled = false;
 			this.gameObject.renderer.enabled = true;
@@ -42,7 +40,6 @@ public class selButton : MonoBehaviour {
 		float colRate = mSys.mw.isHover(gameObject) ? COL_RATE_SEL : (isBro ? COL_RATE_ON : COL_RATE_OFF);
 		Color col = new Color(mDefCol.r*colRate,mDefCol.g*colRate,mDefCol.b*colRate,mDefCol.a);
 		mAnm.SetMeshColor(col);
-		transform.localScale = mDefLocalScale * (mSys.mw.isHover(gameObject) ? 1.3f : 1.0f);
 		
 		GameObject targetObj = mSys.mw.hitTarget;
 		if((mSys.mw.buttonState==TmMouseWrapper.STATE.ON)||(mSys.mw.buttonState==TmMouseWrapper.STATE.DOWN)){
