@@ -42,7 +42,7 @@ public class selButton : MonoBehaviour {
 		float colRate = mSys.mw.isHover(gameObject) ? COL_RATE_SEL : (isBro ? COL_RATE_ON : COL_RATE_OFF);
 		Color col = new Color(mDefCol.r*colRate,mDefCol.g*colRate,mDefCol.b*colRate,mDefCol.a);
 		mAnm.SetMeshColor(col);
-		transform.localScale = mDefLocalScale * (mSys.mw.isHover(gameObject) ? 1.05f : 1.0f);
+		transform.localScale = mDefLocalScale * (mSys.mw.isHover(gameObject) ? 1.3f : 1.0f);
 		
 		GameObject targetObj = mSys.mw.hitTarget;
 		if((mSys.mw.buttonState==TmMouseWrapper.STATE.ON)||(mSys.mw.buttonState==TmMouseWrapper.STATE.DOWN)){
@@ -126,7 +126,7 @@ public class selButton : MonoBehaviour {
 		if(tra.childCount>0){
 			for(int ii = 0; ii < tra.childCount; ++ii){
 				if(tra.GetChild(ii).gameObject.tag==tra.gameObject.tag){
-					Vector3 mvPos = Vector3.up*0.9f;
+					Vector3 mvPos = Vector3.up;
 					mvPos.x = ((float)ii-((float)(tra.childCount-1)*0.5f))*tra.GetChild(ii).localScale.x;
 //					mvPos.Scale(tra.GetChild(ii).localScale);
 //					tra.GetChild(ii).gameObject.SetActive(true);
