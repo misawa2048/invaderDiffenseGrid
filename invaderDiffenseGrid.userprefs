@@ -1,12 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\game\UI\selButton.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/game/UI/selButton.cs">
     <Files>
-      <File FileName="Assets\Scripts\game\UI\selGridOne.cs" Line="49" Column="38" />
-      <File FileName="Assets\Scripts\lib\TmUtils.cs" Line="174" Column="2" />
-      <File FileName="Assets\Scripts\game\GameScript.cs" Line="77" Column="6" />
-      <File FileName="Assets\Scripts\game\UI\touchGrid.cs" Line="40" Column="3" />
-      <File FileName="Assets\Scripts\game\UI\selButton.cs" Line="7" Column="40" />
+      <File FileName="Assets/Scripts/game/UI/selButton.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
