@@ -8,16 +8,16 @@ public class AnimAttribute{
 }
 [System.Serializable]
 public class SpriteAnimation{
+	public const float VERSION = 2.21f;
 	public string name;
 	public int[] frames;
 	public AnimAttribute[] attrs;
 	public bool loop;
 	
-	public SpriteAnimation(string animationName, int first, int last, bool loopPlayback){
-		name = animationName;
-		frames = new int[(last-first<1?1:last-first)];
-		for(int ii=0; ii<frames.Length;++ii){ frames[ii]=ii+first; }
-		loop = loopPlayback;
+	public SpriteAnimation(string _name, int[] _frames, bool _loop){
+		name = _name;
+		frames = _frames;
+		loop = _loop;
 	}
 }
 
@@ -25,20 +25,28 @@ public class SpriteAnimation{
 // アニメーション結果を自前Materialに保存またはメッシュを書き換え、
 // 使いまわすことでDrawCallBatcingを適用させる 
 public class TmSpriteAnim : MonoBehaviour {
+	public enum FLIP{
+		NONE,
+		LR,
+		UD,
+		LRUD
+	};
 	private const float ANIM_TIME_MIN = 0.0001f;
-	private Material outMatreial;
+	private const float EDGE_CLIP_RATE = 0.001f;
+	private Material outMatreial=null;
 	public Vector2 size;
 	public Vector2 offset;
 	public Vector2[] frames;
 	public AnimAttribute[] frameAttrs;
 	public SpriteAnimation[] animations;
 	public string playOnAwake = "";
-	public bool scaleAtUv = false;
+	public bool scaleAtUv = true;
 	public bool setOnGrid = true;
 	public bool reverse = false;
+	public FLIP flip = FLIP.NONE;
 	public float fps = 20.0f;
 	private bool mEnabled;
-	private Vector2 mDefSize;
+	private Vector2 mDefSize { get{ return( (scaleAtUv) ? size : Vector2.Scale(size,mTexSizeInv) ); } }
 	private SpriteAnimation mCurrentAnm;
 	private float mAnimPtr;
 	private AnimAttribute mFrameAttr;
@@ -78,28 +86,22 @@ public class TmSpriteAnim : MonoBehaviour {
 		if((mTgetMat != null)&&(mTgetMat.mainTexture!=null)){
 			mTexSizeInv = new  Vector2(1.0f/(float)(mTgetMat.mainTexture.width),1.0f/(float)(mTgetMat.mainTexture.height));
 		}
-		mDefSize = size;
-		if(!scaleAtUv){
-			mDefSize.Scale(mTexSizeInv);
-		}
 		Mesh nowMesh = getMesh();
-		if(frames.Length>0){
-			if(nowMesh==null){
-				MeshFilter meshFilter = GetComponent<MeshFilter>();
-				if(meshFilter==null){
-					meshFilter = gameObject.AddComponent<MeshFilter>();
-				}
-				nowMesh = initMesh4(new Mesh());
-				meshFilter.mesh = meshFilter.sharedMesh = nowMesh;
+		if(nowMesh==null){
+			MeshFilter meshFilter = GetComponent<MeshFilter>();
+			if(meshFilter==null){
+				meshFilter = gameObject.AddComponent<MeshFilter>();
 			}
-			{
-				Mesh sharedMesh = GetComponent<MeshFilter>().sharedMesh;
-				mDefUvs = new Vector2[sharedMesh.vertexCount];
-				mDefVtcs = new Vector3[sharedMesh.vertexCount];
-				for(int ii = 0; ii < sharedMesh.vertexCount; ++ii){
-					mDefUvs[ii] = new Vector2(sharedMesh.uv[ii].x,sharedMesh.uv[ii].y);
-					mDefVtcs[ii] = new Vector3(sharedMesh.vertices[ii].x,sharedMesh.vertices[ii].y,sharedMesh.vertices[ii].z);
-				}
+			nowMesh = initMesh4(new Mesh());
+			meshFilter.mesh = meshFilter.sharedMesh = nowMesh;
+		}
+		{
+			Mesh sharedMesh = GetComponent<MeshFilter>().sharedMesh;
+			mDefUvs = new Vector2[sharedMesh.vertexCount];
+			mDefVtcs = new Vector3[sharedMesh.vertexCount];
+			for(int ii = 0; ii < sharedMesh.vertexCount; ++ii){
+				mDefUvs[ii] = new Vector2(sharedMesh.uv[ii].x,sharedMesh.uv[ii].y);
+				mDefVtcs[ii] = new Vector3(sharedMesh.vertices[ii].x,sharedMesh.vertices[ii].y,sharedMesh.vertices[ii].z);
 			}
 		}
 		mFrameAttr = mFrameAttrOld = null;
@@ -109,13 +111,13 @@ public class TmSpriteAnim : MonoBehaviour {
 		mUvOfs = offset;
 		mUvOfs.y *= -1.0f;
 		if(setOnGrid){
-			mUvOfs = Vector3.Scale(mUvOfs,size ); 
+			mUvOfs = Vector3.Scale(mUvOfs,mDefSize ); 
 		}
 		if(!scaleAtUv){
 			mUvOfs.Scale(mTexSizeInv);
 		}
 		if(outMatreial!=null){
-			Vector2 sz = size;
+			Vector2 sz = mDefSize;
 			if(!scaleAtUv){
 				sz.x /= (float)(outMatreial.GetTexture("_MainTex").width);
 				sz.y /= (float)(outMatreial.GetTexture("_MainTex").height);
@@ -164,24 +166,26 @@ public class TmSpriteAnim : MonoBehaviour {
 		updateMesh();
 	}
 
-	public bool PlayAnimation(int _id){
+	public bool PlayAnimation(int _id, bool _sameAnimReset=false){
 		bool ret = false;
 		if(_id < animations.Length){
 			mEnabled = true;
-			mCurrentAnm = animations[_id];
-			mAnimPtr = 0.0f;
-			mIsEndOfFrame = false;
-			updateAnim();
-			updateMesh();
+			if(_sameAnimReset || (mCurrentAnm != animations[_id])){
+				mCurrentAnm = animations[_id];
+				mAnimPtr = 0.0f;
+				mIsEndOfFrame = false;
+				updateAnim();
+				updateMesh();
+			}
 			ret = true;
 		}
 		return ret;
 	}
-	public bool PlayAnimation(string _animName){
+	public bool PlayAnimation(string _animName, bool _sameAnimReset=false){
 		bool ret = false;
 		for(int ii = 0; ii < animations.Length; ++ii){
 			if(animations[ii].name==_animName){
-				ret = PlayAnimation(ii);
+				ret = PlayAnimation(ii,_sameAnimReset);
 				break;
 			}
 		}
@@ -217,10 +221,56 @@ public class TmSpriteAnim : MonoBehaviour {
 		return nowMesh;
 	}
 	
-	public Mesh SetMeshUV(Vector2 _uvPos, Vector2 _size, bool _scaleAtUv=true){
-		return setMeshUV(_uvPos, _size, _scaleAtUv);
+	public Mesh SetMeshUV(Vector2 _uvPos, Vector2 _size, FLIP _flip, bool _scaleAtUv=true){
+		return setMeshUV(_uvPos, _size, _flip, _scaleAtUv);
+	}
+	public Mesh SetMeshUVByFrame(int _frame){
+		if(frames.Length-1 < _frame) return getMesh();
+		mUvPos = mUvOfs+getDefFrame(_frame);
+		return setMeshUV(mUvPos, mDefSize, flip, scaleAtUv);
 	}
 	
+	public Vector2[] AddFrame(Vector2 _vec){
+		if(frames==null){
+			frames = new Vector2[0];
+		}
+		Vector2[] ret = new Vector2[frames.Length+1];
+		frames.CopyTo(ret,0);
+		ret[frames.Length]=_vec;
+		frames = ret;
+		return frames;
+	}
+	
+	public SpriteAnimation[] AddAnimation(string _name, int[] _frames, bool _loop){
+		if(animations==null){
+			animations = new SpriteAnimation[0];
+		}
+		SpriteAnimation[] ret = new SpriteAnimation[animations.Length+1];
+		animations.CopyTo(ret,0);
+		ret[animations.Length] = new SpriteAnimation(_name, _frames, _loop);
+		animations = ret;
+		return ret;
+	}
+	
+	//! from texture tiling to TmSprAnmScale Settings.
+	public bool replaceTextureTiling(Material _sharedMat){ 
+		bool ret = false;
+		Material mat = renderer.material;
+		Vector2 txSze = mat.GetTextureScale("_MainTex");
+		Vector2 txOfs = mat.GetTextureOffset("_MainTex");
+		if((txSze!=Vector2.one)&&(txOfs!=Vector2.one)){
+			ret = true;
+			setOnGrid = true;
+			scaleAtUv = true;
+			size = txSze;
+			txOfs.y = 1.0f-(txSze.y+txOfs.y);
+			AddFrame(new Vector2(txOfs.x/txSze.x,txOfs.y/txSze.y));
+			SetMeshUVByFrame(0);
+			renderer.material = _sharedMat;
+		}
+		return ret;
+	}
+		
 	private void updateAnim(){
 		int animFrame = Mathf.FloorToInt(mAnimPtr);
 		if((mCurrentAnm!=null)&&(animFrame < mCurrentAnm.frames.Length)){
@@ -229,17 +279,21 @@ public class TmSpriteAnim : MonoBehaviour {
 			
 			// attribute取得
 			mFrameAttr = null;
-			for( int ii = 0; ii < frameAttrs.Length; ++ii){
-				if(frameAttrs[ii].frame==viewFrame){
-					mFrameAttr = frameAttrs[ii];
-					break;
+			if(frameAttrs!=null){
+				for( int ii = 0; ii < frameAttrs.Length; ++ii){
+					if(frameAttrs[ii].frame==viewFrame){
+						mFrameAttr = frameAttrs[ii];
+						break;
+					}
 				}
 			}
 			mAnimAttr = null;
-			for( int ii = 0; ii < mCurrentAnm.attrs.Length; ++ii){
-				if(mCurrentAnm.attrs[ii].frame==animFrame){
-					mAnimAttr = mCurrentAnm.attrs[ii];
-					break;
+			if(mCurrentAnm.attrs != null){
+				for( int ii = 0; ii < mCurrentAnm.attrs.Length; ++ii){
+					if(mCurrentAnm.attrs[ii].frame==animFrame){
+						mAnimAttr = mCurrentAnm.attrs[ii];
+						break;
+					}
 				}
 			}
 		}
@@ -254,15 +308,25 @@ public class TmSpriteAnim : MonoBehaviour {
 	}
 	
 	private Mesh setMeshUv(){
-		return setMeshUV(mUvPos,size,scaleAtUv);
+		return setMeshUV(mUvPos,mDefSize,flip,scaleAtUv);
 	}
-	private Mesh setMeshUV(Vector2 _uvPos, Vector2 _size, bool _scaleAtUv){
+	private Mesh setMeshUV(Vector2 _uvPos, Vector2 _size, FLIP _flip, bool _scaleAtUv){
 		Mesh nowMesh = getMesh();
 		if(nowMesh!=null){
 			Vector2[] tmpUv = new Vector2[mDefUvs.Length];
 			if(!_scaleAtUv){
 				_size.Scale(mTexSizeInv);
 			}
+			if((_flip == FLIP.LR)||(_flip == FLIP.LRUD)){
+				_uvPos.x += _size.x;
+				_size.x *= -1.0f;
+			}
+			if((_flip == FLIP.UD)||(_flip == FLIP.LRUD)){
+				_uvPos.y += _size.y;
+				_size.y *= -1.0f;
+			}
+			_size *= (1.0f-EDGE_CLIP_RATE);
+			_uvPos += _size*(EDGE_CLIP_RATE*0.5f);
 			for(int ii = 0; ii< mDefUvs.Length; ++ii){
 				tmpUv[ii] = Vector2.Scale(mDefUvs[ii],_size) + _uvPos;
 			}
@@ -276,7 +340,7 @@ public class TmSpriteAnim : MonoBehaviour {
 	private Vector2 getDefFrame(int _frameId){
 		Vector2 defFrame = frames[_frameId];
 		if(setOnGrid){
-			defFrame = Vector3.Scale(defFrame,size ); 
+			defFrame = Vector3.Scale(defFrame,mDefSize ); 
 		}
 		if(!scaleAtUv){
 			Material tgetMat = outMatreial!=null ? outMatreial : renderer.sharedMaterial;
@@ -298,7 +362,6 @@ public class TmSpriteAnim : MonoBehaviour {
 			new Vector3 (0.5f, -0.5f, 0.0f),
 			new Vector3 (-0.5f, -0.5f, 0.0f)
 		};
-		_mesh.triangles = new int[]{ 0, 1, 2, 2, 3, 0 };
 		_mesh.uv = new Vector2[]{
 			new Vector2 (0.0f, 1.0f),
 			new Vector2 (1.0f, 1.0f),
@@ -317,10 +380,10 @@ public class TmSpriteAnim : MonoBehaviour {
 			new Vector3 (0.0f, 0.0f, 1.0f),
 			new Vector3 (0.0f, 0.0f, 1.0f)
 		};
+		_mesh.SetTriangles(new int[]{ 0, 1, 2, 2, 3, 0 },0);
 		_mesh.RecalculateNormals ();
 		_mesh.RecalculateBounds ();
 		_mesh.Optimize();
 		return _mesh;
 	}
-
 }

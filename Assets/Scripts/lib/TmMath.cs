@@ -4,7 +4,7 @@ public class TmMath {
 	//-----------------------------------------------------------------------------
 	//! 点にもっとも近い直線上の点(isSegmentがtrueで線分判定)
 	//-----------------------------------------------------------------------------
-	public static Vector2 nearestPointOnLine(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
+	static public Vector2 nearestPointOnLine(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
 	    Vector2 d = p2 - p1;
 	    if (d.sqrMagnitude == 0)    return p1;
 	    float t = (d.x * (p - p1).x + d.y * (p - p1).y) / d.sqrMagnitude;
@@ -19,14 +19,14 @@ public class TmMath {
 	//-----------------------------------------------------------------------------
 	//! 直線と点の距離(isSegmentがtrueで線分判定)
 	//-----------------------------------------------------------------------------
-	public static float lineToPointDistance(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
+	static public float lineToPointDistance(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
 		return ( p - nearestPointOnLine(p1,p2,p,isSegment) ).magnitude;
 	}
 	
 	//-----------------------------------------------------------------------------
-	//! 線分の交差チェック   交差したらtrue
+	//! 線分の交差チェック : 交差したらtrue
 	//-----------------------------------------------------------------------------
-	public static bool crossCheck(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)	{
+  static bool crossCheck(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
 		if(((p1.x-p2.x)*(p3.y-p1.y)+(p1.y-p2.y)*(p1.x-p3.x))*((p1.x-p2.x)*(p4.y-p1.y)+(p1.y-p2.y)*(p1.x-p4.x))<0){
 			if(((p3.x-p4.x)*(p1.y-p3.y)+(p3.y-p4.y)*(p3.x-p1.x))*((p3.x-p4.x)*(p2.y-p3.y)+(p3.y-p4.y)*(p3.x-p2.x))<0){
 				return(true);
@@ -36,9 +36,9 @@ public class TmMath {
 	}
 
 	//-----------------------------------------------------------------------------
-	//! 直線と直線の交点(isSegmentがtrueで線分判定):nullなら交差しない
+	//! 直線と直線の交点(isSegmentがtrueで線分判定) : falseなら交差しない 
 	//-----------------------------------------------------------------------------
-	public static bool intersection(out Vector2 ret, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, bool isSegment=true){
+	static public bool intersection(out Vector2 ret, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, bool isSegment=true){
 		bool result = false;
 		ret = Vector2.zero;
 		Vector2 ac = (p3 - p1);

@@ -54,7 +54,7 @@ public class selButton : MonoBehaviour {
 		}else if(mSys.mw.buttonState==TmMouseWrapper.STATE.UP){
 			if(targetObj==gameObject){
 				mGame.command = ((mParts!=null)) ? mParts.link : "";
-				Debug.Log("selButton.Up:"+mGame.command);
+//				Debug.Log("selButton.Up:"+mGame.command);
 			}
 			popOffChild();
 		}

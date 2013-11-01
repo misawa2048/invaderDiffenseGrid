@@ -2,6 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 public class lineOne : MonoBehaviour {
+	public class linePrim{
+		public Vector2 stt;
+		public Vector2 end;
+		public Color col;
+	};
+	
 	private Mesh mMesh;
 	private Vector3[] mVertices;
 	
@@ -22,6 +28,8 @@ public class lineOne : MonoBehaviour {
 	//------------------------------------------------------
 	void SM_SetSttPos(Vector2 _pos){ setMeshVtx(0, _pos); }
 	void SM_SetEndPos(Vector2 _pos){ setMeshVtx(1, _pos); }
+	void SM_SetColor(Color _col){ TmUtils.SetMeshColor(mMesh,_col); }
+	void SM_SetLine(linePrim _par){ setMeshVtx(0,_par.stt); setMeshVtx(1,_par.end); SM_SetColor(_par.col); }
 	//------------------------------------------------------
 
 	

@@ -124,7 +124,7 @@ public class MyParts{
 			parts.partsObj.transform.rotation = parts.parent.partsObj.transform.rotation;
 			parts.partsObj.transform.parent = parts.parent.partsObj.transform;
 		}
-		Debug.Log(_node.ChildNodes.Count+":"+parts.id);
+//		Debug.Log(_node.ChildNodes.Count+":"+parts.id);
 		if(_node.ChildNodes.Count>0){
 			parts.childList = new List<MyParts>();
 			for(int ii = 0; ii < _node.ChildNodes.Count; ++ii){

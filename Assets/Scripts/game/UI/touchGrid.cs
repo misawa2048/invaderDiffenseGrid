@@ -67,6 +67,7 @@ public class touchGrid : MonoBehaviour {
 					posLineObj.SendMessage("SM_SetSttPos",tmpLocalPos);
 				}
 				posLineObj.SendMessage("SM_SetEndPos",mTouchLocalPos);
+				posLineObj.SendMessage("SM_SetColor",(mNearestPlObj==null) ? Color.red : Color.white);
 				posLineObj.renderer.enabled = true;
 			}
 		}else{
