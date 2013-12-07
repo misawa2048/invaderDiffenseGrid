@@ -49,6 +49,9 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
 --- !u!33 &3300000
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -67,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e0cdc5bc6d231438ec5d0b7dd2bb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distMinSq: 4
+  distMinSq: 40
   bulletInterval: 2
   bulletSpeed: 8
   bulleteLifeTime: 1.5
@@ -97,6 +100,7 @@ MonoBehaviour:
   scaleAtUv: 1
   setOnGrid: 1
   reverse: 0
+  flip: 0
   fps: 1
 --- !u!135 &13500000
 SphereCollider:

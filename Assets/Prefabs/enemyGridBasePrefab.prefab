@@ -37,10 +37,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7b75670ceb215b449dd639c3092a3c4, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   enemyBasePrefab: {fileID: 100000, guid: e4663b71dda56944089c9d7cc498b975, type: 2}
-  parentGridObj: {fileID: 0}
   posPanelPrefab: {fileID: 100000, guid: f9f2d24555dc4ca43af1b2a5c7c1abc6, type: 2}
-  enemyInterval: .5
+  enemySpd: .100000001
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

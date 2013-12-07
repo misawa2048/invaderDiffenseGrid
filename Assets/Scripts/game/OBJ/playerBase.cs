@@ -70,6 +70,7 @@ public class playerBase : MonoBehaviour {
 			if(mBulletTimer<=0.0f){
 				mBulletTimer += Random.Range(bulletInterval*0.9f,bulletInterval*1.1f);
 				GameObject bl = GameObject.Instantiate(bulletPrefab,transform.position,transform.rotation) as GameObject;
+				bl.tag = "tagBullet";
 				bl.transform.parent = transform.parent;
 				bulletParam param = new bulletParam(bulletSpeed,1.0f,bulleteLifeTime);
 				bl.SendMessage("SM_SetBulletSpeed",param);
@@ -109,22 +110,10 @@ public class playerBase : MonoBehaviour {
 	
 	private Vector3 getClossPoint(Vector3 p0,Vector3 s0, Vector3 p1,float spd){
 		Vector3 retPos = p0;
-#if true
-		// p1がp0に到達するのにかかる時間t1 
-		float t1 = (p1-p0).magnitude/spd;
-		retPos += s0*t1*0.5f;
-#else
-		Vector2 p1NearestPos = TmMath.nearestPointOnLine(p0,p0+s0,p1,false);
-		// p0がp1NearestPosに到達するのにかかる時間t0 
-		float t0 = (p1NearestPos-new Vector2(p0.x,p0.y)).magnitude/s0.magnitude;
-		// p1がspdの速度でp1NearestPosに到達するのにかかる時間t1 
-		float t1 = (p1NearestPos-new Vector2(p1.x,p1.y)).magnitude/spd;
-		if(t0>t1){
-			retPos = new Vector3(p1NearestPos.x,p1NearestPos.y,p1.z);
-		}else{
-			retPos += s0*(t1-t0)/t1;
+		float t0 = TmMath.getCollideTime(p0,s0,p1,spd);
+		if(t0>0.0f){
+			retPos += s0*t0;
 		}
-#endif
 		return retPos;
 	}
 }

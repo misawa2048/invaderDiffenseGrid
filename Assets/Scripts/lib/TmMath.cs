@@ -4,16 +4,19 @@ public class TmMath {
 	//-----------------------------------------------------------------------------
 	//! 点にもっとも近い直線上の点(isSegmentがtrueで線分判定)
 	//-----------------------------------------------------------------------------
-	static public Vector2 nearestPointOnLine(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
-	    Vector2 d = p2 - p1;
-	    if (d.sqrMagnitude == 0)    return p1;
-	    float t = (d.x * (p - p1).x + d.y * (p - p1).y) / d.sqrMagnitude;
+	static public Vector3 nearestPointOnLine(Vector3 p1, Vector3 p2, Vector3 p, bool isSegment=true){
+		Vector3 d = p2 - p1;
+		if (d.sqrMagnitude == 0.0f)    return p1;
+		float t = (d.x * (p - p1).x + d.y * (p - p1).y + d.z * (p - p1).z) / d.sqrMagnitude;
 		if(isSegment){
-		    if (t < 0)    return p1;
-		    if (t > 1)    return p2;
+			if (t < 0.0f)    return p1;
+			if (t > 1.0f)    return p2;
 		}
-		Vector2 c = new Vector2( (1 - t) * p1.x + t * p2.x, (1 - t) * p1.y + t * p2.y);
-	    return c;
+		return (1.0f-t)*p1 + t*p2;
+	}
+	static public Vector2 nearestPointOnLine(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
+		Vector3 ret = nearestPointOnLine(new Vector3(p1.x,p1.y), new Vector3(p2.x,p2.y), new Vector3(p.x,p.y),isSegment);
+		return new Vector2(ret.x,ret.y);
 	}
 	
 	//-----------------------------------------------------------------------------
@@ -22,11 +25,54 @@ public class TmMath {
 	static public float lineToPointDistance(Vector2 p1, Vector2 p2, Vector2 p, bool isSegment=true){
 		return ( p - nearestPointOnLine(p1,p2,p,isSegment) ).magnitude;
 	}
+	static public float lineToPointDistance(Vector3 p1, Vector3 p2, Vector3 p, bool isSegment=true){
+		return ( p - nearestPointOnLine(p1,p2,p,isSegment) ).magnitude;
+	}
+	
+	//-----------------------------------------------------------------------------
+	//! 2直線の近傍点(isSegmentがtrueで線分判定)
+	//-----------------------------------------------------------------------------
+	static public float lineToLineDistance(out Vector3 p0, out Vector3 q0, Vector3 p1, Vector3 p2, Vector3 q1, Vector3 q2, bool isSegment=true){
+		if((p2-p1).sqrMagnitude==0.0f){
+			p0 = p1;
+			q0 = nearestPointOnLine(q1, q2, p1, isSegment);
+		}else if((q2-q1).sqrMagnitude==0.0f){
+			p0 = nearestPointOnLine(p1, p2, q1, isSegment);
+			q0 = q1;
+		}else{
+			Vector3 m = (p2-p1).normalized;
+			Vector3 n = (q2-q1).normalized;
+			Vector3 ab = q1-p1;
+			float mn = Vector3.Dot(m,n);
+			if(Mathf.Abs(mn)==1.0f){
+				Vector3 tp1 = nearestPointOnLine(p1, p2, q1, true);
+				Vector3 tp2 = nearestPointOnLine(p1, p2, q2, true);
+				Vector3 tq1 = nearestPointOnLine(q1, q2, p1, true);
+				Vector3 tq2 = nearestPointOnLine(q1, q2, p2, true);
+				p0 = (tp1+tp2)*0.5f;
+				q0 = (tq1+tq2)*0.5f;
+			}else{
+				float s = (Vector3.Dot(ab,m)-Vector3.Dot(ab,n)*mn)/(1.0f-mn*mn);
+				float t = (Vector3.Dot(ab,m)*mn-Vector3.Dot(ab,n))/(1.0f-mn*mn);
+				p0 = p1+m*s;
+				q0 = q1+n*t;
+				if(isSegment){
+					p0 = nearestPointOnLine(p1, p2, p0, true);
+					q0 = nearestPointOnLine(q1, q2, q0, true);
+				}
+			}
+		}
+		return (q0-p0).magnitude;
+	}
+	static public float lineToLineDistance(Vector3 p1, Vector3 p2, Vector3 q1, Vector3 q2, bool isSegment=true){
+		Vector3 p0,q0;
+		return lineToLineDistance(out p0, out q0, p1, p2, q1, q2, isSegment);
+	}
 	
 	//-----------------------------------------------------------------------------
 	//! 線分の交差チェック : 交差したらtrue
 	//-----------------------------------------------------------------------------
-  static bool crossCheck(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
+	static bool crossCheck(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
 		if(((p1.x-p2.x)*(p3.y-p1.y)+(p1.y-p2.y)*(p1.x-p3.x))*((p1.x-p2.x)*(p4.y-p1.y)+(p1.y-p2.y)*(p1.x-p4.x))<0){
 			if(((p3.x-p4.x)*(p1.y-p3.y)+(p3.y-p4.y)*(p3.x-p1.x))*((p3.x-p4.x)*(p2.y-p3.y)+(p3.y-p4.y)*(p3.x-p2.x))<0){
 				return(true);
@@ -34,7 +80,7 @@ public class TmMath {
 		}
 		return(false);
 	}
-
+	
 	//-----------------------------------------------------------------------------
 	//! 直線と直線の交点(isSegmentがtrueで線分判定) : falseなら交差しない 
 	//-----------------------------------------------------------------------------
@@ -52,5 +98,52 @@ public class TmMath {
 			}
 		}
 		return result;
+	}
+	
+	//-----------------------------------------------------------------------
+	//! 弾丸衝突チェック 
+	//-----------------------------------------------------------------------
+	static public bool bulletHit(out Vector3 hit, Vector3 p, Vector3 pOld, float pRadius, Vector3 q, Vector3 qOld, float qRadius){
+		bool ret = false;
+		Vector3 p0,q0;
+		float hitRad = pRadius+qRadius;
+		float dist = lineToLineDistance(out p0, out q0, p, pOld, q, qOld, true);
+		hit = (p0*pRadius+q0*qRadius)/hitRad;
+		if(dist<=hitRad){
+			Vector3 qp = qOld+(q-qOld)*((p0-pOld).magnitude/(p-pOld).magnitude); // sync time 
+			Vector3 pq = pOld+(p-pOld)*((q0-qOld).magnitude/(q-qOld).magnitude); // sync time 
+			if(((p0-qp).sqrMagnitude < hitRad*hitRad)||((pq-q0).sqrMagnitude < hitRad*hitRad)){
+				ret = true;
+			}
+		}
+		return ret;
+	}
+	
+	//-----------------------------------------------------------------------
+	//! 衝突時刻取得:q1+qSpd*retがhit場所(retがマイナスの場合はhitしない） 
+	//-----------------------------------------------------------------------
+	static public float getCollideTime(Vector3 q1, Vector3 qSpd, Vector3 p1, float ps){
+		float ret = float.MinValue;
+		Vector3 p0,q0;
+		float qs = qSpd.magnitude;
+		Vector3 q2 = q1+qSpd;
+		float d = lineToLineDistance(out p0,out q0,p1,p1,q1,q2,false);
+		// p1から直線q1q2にひいた垂線の交点 を通る時間 t0
+		float t0 = Vector3.Dot(qSpd.normalized,p0-q1)/qs;
+		float a = qs*qs - ps*ps;
+		float b = -(2*t0*qs*qs);
+		float c = (t0*qs)*(t0*qs) + d*d;
+		float aa = b*b - 4 * a * c;
+		if(a==0.0f){
+			ret = (-c/b);
+		}else if(aa>0.0f){
+			float t1 = (-b+Mathf.Sqrt(aa)) / (2*a);
+			float t2 = (-b-Mathf.Sqrt(aa)) / (2*a);
+			ret = Mathf.Min(t1,t2);
+			if(ret<0.0f){
+				ret = Mathf.Max(t1,t2);
+			}
+		}
+		return ret;
 	}
 }
