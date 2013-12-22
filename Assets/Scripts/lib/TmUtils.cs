@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Xml;
 public class TmUtils {
 	// ----------------
 	// Time関係 
@@ -100,6 +102,46 @@ public class TmUtils {
 		mesh.RecalculateBounds ();
 		mesh.Optimize();
 		mesh.SetIndices(mesh.GetIndices(0),MeshTopology.LineStrip,0);
+		return mesh;
+	}
+	
+	public static Mesh CreateTileMesh(int _divX, int _divY){
+		return CreateTileMesh(_divX, _divY, Color.white);
+	}
+	public static Mesh CreateTileMesh(int _divX, int _divY, Color _vertCol){
+		int vertNum = (_divX+1)*(_divY+1);
+		int quadNum = _divX*_divY;
+		int[] triangles = new int[quadNum*6];
+		Vector3[] vertices = new Vector3[vertNum];
+		Vector2[] uv = new Vector2[vertNum];
+		Color[] colors = new Color[vertNum];
+		Vector3[] normals = new Vector3[vertNum];
+		
+		for(int yy = 0; yy < (_divY+1); ++yy){
+			for(int xx = 0; xx < (_divX+1); ++xx){
+				Vector2 uvPos = new Vector2((float)xx/(float)_divX,(float)yy/(float)_divY);
+				vertices[yy*(_divX+1)+xx] = new Vector3(uvPos.x-0.5f,uvPos.y-0.5f,0.0f);
+				uv[yy*(_divX+1)+xx] = uvPos;
+				colors[yy*(_divX+1)+xx] = _vertCol;
+				if((xx<_divX)&&(yy<_divY)){
+					int[] sw={0,0,1,1,1,0,1,1,0,0,0,1};
+					for(int ii = 0; ii < 6; ++ii){
+						triangles[(yy*_divX+xx)*6+ii] = (yy+sw[ii*2+1])*(_divX+1)+(xx+sw[ii*2+0]);
+					}
+				}
+			}
+		}
+
+		Mesh mesh = new Mesh();
+		mesh.vertices = vertices;
+		mesh.triangles = triangles;
+		mesh.uv = uv;
+		mesh.colors = colors;
+		mesh.normals = normals;
+		mesh.RecalculateNormals ();
+		mesh.RecalculateBounds ();
+		mesh.Optimize();
+		mesh.SetIndices(mesh.GetIndices(0),MeshTopology.Triangles,0);
 		return mesh;
 	}
 	
@@ -245,5 +287,58 @@ public class TmUtils {
 		retRect.x = (int)(retRect.x+d.x);
 		retRect.y = (int)(retRect.y+d.y);
 		return retRect;
+	}
+
+	// 画面内判定 
+	public static Vector2 ScreenDisplacement(Vector3 _worldPos){
+		Vector2 scr = new Vector2((float)Screen.width,(float)Screen.height) * 0.5f;
+		Vector3 sPos = Camera.main.WorldToScreenPoint(_worldPos);
+		return new Vector2(Mathf.Abs((scr.x-sPos.x)/scr.x),Mathf.Abs((scr.y-sPos.y)/scr.y));
+	}
+	public static bool IsInnerScreen(Vector3 _worldPos, float _rate=1.0f){
+		Vector2 displacement = ScreenDisplacement(_worldPos);
+		return(Mathf.Max(displacement.x, displacement.y) <= _rate);
+	}
+	
+	// ----------------
+	// TextAsset関係 
+	// ----------------
+	// csvファイルを2次元配列に格納(_commentで始まる行はコメント) 
+	public static string[,] CsvToMap(TextAsset _csvData, string _comment="//"){
+		List<List<string>> dataListArr = new List<List<string>>();
+		string[] lines = _csvData.text.Split("\n"[0]);
+		int maxLength = 0;
+		if(lines.Length>0){
+			foreach( string line in lines){
+				if((_comment!="")&&(!line.StartsWith(_comment))){
+					List<string> dataList = new List<string>();
+					string[] datas = line.Split(","[0]);
+					maxLength = Mathf.Max(maxLength,datas.Length);
+					foreach( string data in datas){
+						dataList.Add(data);
+					}
+					dataListArr.Add(dataList);
+				}
+			}
+		}
+		string[,] retMap = new string[maxLength,dataListArr.Count];
+		if((dataListArr.Count>0)&&(maxLength>0)){
+			for(int y = 0; y < dataListArr.Count; ++y){
+				for(int x = 0; x < dataListArr[y].Count; ++x){
+					retMap[x,y] = dataListArr[y][x].Replace("\r","");
+				}
+				for(int x = dataListArr[y].Count; x < maxLength; ++x){
+					retMap[x,y] = "";
+				}
+			}
+		}
+		return retMap;
+	}
+
+	// xmlファイルをXmlDocumentに格納 
+	public static XmlDocument XmlToDoc(TextAsset _xmlData){
+		XmlDocument doc = new XmlDocument();
+		doc.LoadXml(_xmlData.text);
+		return doc;
 	}
 }

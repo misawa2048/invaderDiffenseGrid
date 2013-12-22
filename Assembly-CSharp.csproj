@@ -65,11 +65,13 @@
      <Compile Include="Assets\Scripts\game\bgStars.cs" />
      <Compile Include="Assets\Scripts\game\dropItem.cs" />
      <Compile Include="Assets\Scripts\game\earth.cs" />
+     <Compile Include="Assets\Scripts\lib\Tm9Slice.cs" />
      <Compile Include="Assets\Scripts\lib\TmBgScript.cs" />
      <Compile Include="Assets\Scripts\lib\TmKeyRec.cs" />
      <Compile Include="Assets\Scripts\lib\TmMath.cs" />
      <Compile Include="Assets\Scripts\lib\TmMouseWrapper.cs" />
      <Compile Include="Assets\Scripts\lib\TmSpriteAnim.cs" />
+     <Compile Include="Assets\Scripts\lib\TmSpriteAnim2D.cs" />
      <Compile Include="Assets\Scripts\lib\TmSystem.cs" />
      <Compile Include="Assets\Scripts\lib\TmTouchWrapper.cs" />
      <Compile Include="Assets\Scripts\lib\TmUtils.cs" />

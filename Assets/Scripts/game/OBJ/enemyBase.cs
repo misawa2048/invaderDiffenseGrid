@@ -11,7 +11,7 @@ public class enemyBase : MonoBehaviour {
 	public GameObject dropItemPrefab;
 	private List <Vector2> mPosList;
 	private RNO _rno;
-	private TmSpriteAnim mAnm;
+	private TmSpriteAnim2D mAnm;
 	private int mDistId;
 	private float mLocalSpeedScalar;
 	private Vector2 mLocalSpeed;
@@ -24,8 +24,8 @@ public class enemyBase : MonoBehaviour {
 		if(mPosList==null) return;
 		
 		_rno = RNO.MOVE;
-		mAnm = GetComponent<TmSpriteAnim>();
-		mAnm.SetMeshColor(new Color(Random.Range(0.3f,0.9f),Random.Range(0.3f,0.9f),Random.Range(0.3f,0.8f),1.0f));
+		mAnm = GetComponent<TmSpriteAnim2D>();
+		mAnm.SetColor(new Color(Random.Range(0.3f,0.9f),Random.Range(0.3f,0.9f),Random.Range(0.3f,0.8f),1.0f));
 		mDistId = 0;
 		Vector2 pos = mPosList[mDistId];
 		pos.y += (1.0f/(float)GameScript.MESH_H)*3.0f;

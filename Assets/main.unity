@@ -362,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: {x: .25, y: 1}
   offset: {x: 0, y: 0}
+  frames2D: []
   frames:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -615,6 +616,7 @@ GameObject:
   - 4: {fileID: 884206258}
   - 33: {fileID: 884206259}
   - 23: {fileID: 884206260}
+  - 114: {fileID: 884206261}
   m_Layer: 0
   m_Name: UIBase
   m_TagString: Untagged
@@ -661,6 +663,19 @@ Renderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortingLayerID: 0
+--- !u!114 &884206261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 884206257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c59876382881e14fba146d0bb020961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldEdgeSize: {x: 2, y: 2}
+  maxEdgeRate: {x: .5, y: .5}
 --- !u!1 &948051806
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class bulletBase : MonoBehaviour {
 	};
 
 	private const float ALPHA_TIME = 0.1f;
-	private TmSpriteAnim _anm;
+	private TmSpriteAnim2D _anm;
 	private Color mMeshColor;
 	private float mDeleteTimer;
 	private float mBulletSpeed=2.0f;
@@ -26,9 +26,9 @@ public class bulletBase : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_anm = GetComponent<TmSpriteAnim>();
-		mMeshColor = new Color(0.5f,0.5f,0.5f,1.0f);
-		_anm.SetMeshColor(mMeshColor);
+		_anm = GetComponent<TmSpriteAnim2D>();
+		mMeshColor = new Color(1.0f,1.0f,1.0f,1.0f);
+		_anm.SetColor(mMeshColor);
 	}
 	
 	// Update is called once per frame
@@ -37,7 +37,7 @@ public class bulletBase : MonoBehaviour {
 		mDeleteTimer -= Time.deltaTime;
 		float a = mDeleteTimer/ALPHA_TIME;
 		mMeshColor.a = (a < 1.0f) ? a : 1.0f;
-		_anm.SetMeshColor(mMeshColor);
+		_anm.SetColor(mMeshColor);
 		if(mDeleteTimer <= 0.0f){
 			Destroy(gameObject);
 		}
