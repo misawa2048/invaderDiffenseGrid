@@ -7,8 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: dropItem
-  m_Shader: {fileID: 4800000, guid: fe2c2703b4f894f17b5e63285428a330, type: 3}
+  m_Shader: {fileID: 4800000, guid: d253f48e3f7e6c3459662dcd97747990, type: 3}
   m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -19,7 +20,11 @@ Material:
           m_Texture: {fileID: 2800000, guid: 918c6138d22d2124f8983955bc0cfaf5, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats: {}
+    m_Floats:
+      data:
+        first:
+          name: PixelSnap
+        second: 0
     m_Colors:
       data:
         first:

@@ -25,7 +25,7 @@ public class enemyBase : MonoBehaviour {
 		
 		_rno = RNO.MOVE;
 		mAnm = GetComponent<TmSpriteAnim2D>();
-		mAnm.SetColor(new Color(Random.Range(0.3f,0.9f),Random.Range(0.3f,0.9f),Random.Range(0.3f,0.8f),1.0f));
+		mAnm.SetMeshColor(new Color(Random.Range(0.3f,0.9f),Random.Range(0.3f,0.9f),Random.Range(0.3f,0.8f),1.0f));
 		mDistId = 0;
 		Vector2 pos = mPosList[mDistId];
 		pos.y += (1.0f/(float)GameScript.MESH_H)*3.0f;

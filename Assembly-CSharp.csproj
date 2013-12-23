@@ -86,7 +86,9 @@
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\shaders\ColoredDecal1TexVtxCol.shader" />
      <None Include="Assets\shaders\coverGlass.shader" />
+     <None Include="Assets\shaders\EdgeAddOutlineByAlpha.shader" />
      <None Include="Assets\shaders\EdgeOutlineByAlpha.shader" />
+     <None Include="Assets\shaders\Sprites2D-vtxColx2.shader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">

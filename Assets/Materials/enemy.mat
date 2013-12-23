@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: enemy
-  m_Shader: {fileID: 4800000, guid: dd470da9d963e9a4786cbb424b98d126, type: 3}
+  m_Shader: {fileID: 4800000, guid: d253f48e3f7e6c3459662dcd97747990, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -17,7 +17,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 90a32f3e7820bf14a93fc44bcfc634e6, type: 3}
+          m_Texture: {fileID: 2800000, guid: 78c0bcfebc4524fb0af393b555965df2, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -28,6 +28,10 @@ Material:
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
+      data:
+        first:
+          name: PixelSnap
+        second: 0
       data:
         first:
           name: _Shininess
@@ -56,7 +60,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .992647052, g: .992647052, b: .992647052, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _SpecColor
@@ -69,3 +73,7 @@ Material:
         first:
           name: _Offset
         second: {r: .00999999978, g: .00999999978, b: 0, a: 0}
+      data:
+        first:
+          name: _EdgeColor
+        second: {r: .485294104, g: .485294104, b: .485294104, a: 1}
