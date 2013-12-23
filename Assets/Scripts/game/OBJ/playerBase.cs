@@ -31,6 +31,8 @@ public class playerBase : MonoBehaviour {
 //		mAnm = GetComponent<TmSpriteAnim>();
 //		mDestLocalPos = transform.localPosition;
 		mBulletTimer = 0.0f;
+		TmSpriteAnim2D anm = GetComponent<TmSpriteAnim2D>();
+		anm.SetMeshColor(new Color(0.5f,0.5f,0.6f,1.0f));
 	}
 	
 	// Update is called once per frame
