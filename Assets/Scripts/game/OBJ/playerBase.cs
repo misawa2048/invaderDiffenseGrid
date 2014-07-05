@@ -46,7 +46,7 @@ public class playerBase : MonoBehaviour {
 			}
 			Vector3 dirVec = vec.normalized * spd;
 			transform.localPosition += dirVec;
-			setRot(Mathf.Atan2(dirVec.x,dirVec.y));
+			transform.rotation = TmMath.LookRotation2D(dirVec,Vector2.up);
 			return;
 		}
 		if(mBulletTimer>0){
@@ -67,7 +67,7 @@ public class playerBase : MonoBehaviour {
 			if(sizeVec.sqrMagnitude < distMinSq){
 				Vector3 emWorldSpd = em.GetComponent<enemyBase>().worldSpeed;
 				sizeVec = getClossPoint(em.transform.position,emWorldSpd,transform.position,bulletSpeed) - transform.position;
-				setRot(Mathf.Atan2(sizeVec.x,sizeVec.y));
+				transform.rotation = TmMath.LookRotation2D(sizeVec,Vector2.up);
 			}
 			if(mBulletTimer<=0.0f){
 				mBulletTimer += Random.Range(bulletInterval*0.9f,bulletInterval*1.1f);
@@ -103,16 +103,9 @@ public class playerBase : MonoBehaviour {
 	}
 	//------------------------------------------------------
 	
-	private void setRot(float ang){
-		Quaternion tmpRot = Quaternion.identity;
-		tmpRot.eulerAngles = new Vector3(0.0f,0.0f,-ang*180.0f/Mathf.PI);
-		transform.rotation = tmpRot;
-//		ringArrowObj.transform.rotation = sttRot * tmpRot;
-	}
-	
 	private Vector3 getClossPoint(Vector3 p0,Vector3 s0, Vector3 p1,float spd){
 		Vector3 retPos = p0;
-		float t0 = TmMath.getCollideTime(p0,s0,p1,spd);
+		float t0 = TmMath.CollideTime(p0,s0,p1,spd);
 		if(t0>0.0f){
 			retPos += s0*t0;
 		}

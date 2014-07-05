@@ -53,6 +53,7 @@ public class enemyBase : MonoBehaviour {
 					mLocalSpeed = (nextPos-nowPos).normalized * mLocalSpeedScalar;
 					movePos += mLocalSpeed*Time.deltaTime;
 					transform.localPosition = movePos;
+					transform.rotation = Quaternion.Lerp(transform.rotation, TmMath.LookRotation2D(mLocalSpeed,Vector2.up),0.1f);
 				}
 			}else{
 				Destroy(gameObject);
@@ -87,4 +88,5 @@ public class enemyBase : MonoBehaviour {
 	public void SM_SetMoveSpeed(float _spd){
 		mLocalSpeedScalar = _spd;
 	}
+
 }
