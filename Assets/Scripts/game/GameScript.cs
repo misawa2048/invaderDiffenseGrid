@@ -6,6 +6,7 @@ using System.Xml;
 
 public class GameScript : MonoBehaviour {
 	public GameObject selButtonPartsPrefab;
+	public GameObject plMotherShipPrefab;
 	public GameObject playerBasePrefab;
 	public GameObject touchGridObj;
 	public const int MESH_W = 10;
@@ -135,12 +136,15 @@ public class MyParts{
 	}
 	
 	private void createPlayers () {
+		GameObject motherGo = GameObject.Instantiate(plMotherShipPrefab) as GameObject;
+		motherGo.transform.parent = touchGridObj.transform;
+		motherGo.transform.localPosition = new Vector3(0.35f,-0.45f,0.0f);
 		for(int ii = 0; ii < 10; ++ii){
 			int ix = Random.Range(0,MESH_W);
 			int iy = Random.Range(0,MESH_H);
 			GameObject go = GameObject.Instantiate(playerBasePrefab) as GameObject;
 			go.transform.parent = touchGridObj.transform;
-			go.transform.localPosition = new Vector3(0.0f,-0.6f,0.0f);
+			go.transform.localPosition = motherGo.transform.localPosition;
 			go.SendMessage("SM_SetDestGridId",new Vector2(ix,iy));
 		}
 	}

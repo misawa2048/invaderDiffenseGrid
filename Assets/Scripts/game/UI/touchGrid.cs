@@ -31,7 +31,7 @@ public class touchGrid : MonoBehaviour {
 		}
 		posPanelObj.transform.localScale = new Vector3(1.0f/MESH_W,1.0f/MESH_H,1.0f);
 		mMesh = TmUtils.SetMeshColor(mMesh,new Color(0.2f,0.5f,0.2f,0.2f));
-		
+
 	}
 	
 	// Update is called once per frame
