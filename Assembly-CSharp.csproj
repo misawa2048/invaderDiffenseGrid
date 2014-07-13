@@ -77,6 +77,7 @@
      <Compile Include="Assets\Scripts\lib\TmUtils.cs" />
      <None Include="Assets\shaders\SimpleGauge.shader" />
      <None Include="Assets\shaders\earth.shader" />
+     <None Include="Assets\shaders\Atmosphere.shader" />
      <None Include="Assets\Resources\xml\book0.xml" />
      <None Include="Assets\shaders\TransparentSelfIlumin.shader" />
      <None Include="Assets\shaders\SelfIluminBackGround.shader" />
